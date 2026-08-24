@@ -92,33 +92,111 @@
 // 1000)
 // },1000)
 
-   const mypromise=new Promise((resolve,reject)=>{
-      const username="ptomer40";
-      const password="123456";
-      if(username=="ptomer40" && password=="123456"){
-        resolve("successs");
-      }else{
-        reject("username or password incorrect")
-      }
-   })
-
-//    mypromise.then((msg)=>{
-// console.log(msg)
-//    }).catch((msg)=>{
-// console.log(msg)
-//    }).finally(()=>{
-//     console.log("All done")
+//    const mypromise=new Promise((resolve,reject)=>{
+//       const username="ptomer40";
+//       const password="123456";
+//       if(username=="ptomer40" && password=="123456"){
+//         resolve("success");
+//       }else{
+//         reject("username or password incorrect")
+//       }
 //    })
 
-async function handleData(){
-    try{
-       const msg= await mypromise;
-       console.log(msg)
-    }catch(err){
-        console.log(err)
-    }
-    finally{
-        console.log("All Done")
-    }
-}
-handleData();
+
+
+//     const orderrecieve=new Promise((resolve,reject)=>{
+//     resolve("Order recieved");
+//       })
+// //    mypromise.then((msg)=>{
+// // console.log(msg)
+// //    }).catch((msg)=>{
+// // console.log(msg)
+// //    }).finally(()=>{
+// //     console.log("All done")
+// //    })
+
+// async function handleData(){
+//     try{
+//        const msg= await mypromise;
+//        if(msg=="success"){
+//               const orderstatus=await orderrecieve;
+//               setTimeout(()=>{console.log(orderstatus)},1000)
+              
+//   }
+// }catch(err){
+//         console.log(err)
+//     }
+//     finally{
+//         console.log("All Done")
+//     }
+// }
+// handleData();
+
+
+
+// function orderRecieve(){
+//   return new Promise((resolve)=>{
+// setTimeout(()=>{
+//   resolve("order recieved");
+// },1000)
+//   })
+// }
+
+// async function orderHandler(){
+//              try{
+//          const status=await orderRecieve();
+//          console.log(status)
+//              }catch(err){
+//               console.log(err)
+//              }
+// }
+
+// orderRecieve().then((msg)=>{
+// console.log(msg)
+// }).catch((err)=>{
+
+// }).finally(()=>{
+//   console.log("Finally Done")
+// })
+
+
+const button=document.getElementById('btn');
+const container=document.getElementById('conatiner');
+
+const loading=document.createElement('div');
+container.appendChild(loading);
+
+async function fetchData(){
+                try{
+             loading.innerHTML="<h2>Loading Data...</h2>";
+const serverData=await fetch('https://fakestoreapi.com/products')
+const jsonData= await serverData.json();
+console.log(jsonData)
+            // container.innerHTML=`${JSON.stringify(jsonData)}`
+
+            let table=`<table border='4px'>
+                <tr><td>ITEM_ID</td><td>TITLE</td><td>PRICE</td></tr>
+                  ${
+                   jsonData.map((ele)=>(
+                    `<tr>
+                    <td><img src=${ele.image} height="100px" width="100px" alt='Cloth'/></td>
+                    <td>${ele.id}</td>
+                    <td>${ele.title}</td>
+                    <td>${ele.price}</td>
+                    </tr>`
+                   )) 
+                  }
+            </table>`
+            container.innerHTML=table;
+        
+        }catch(e){
+         loading.innerHTML='<h2>Loading Error</h2>'
+        }
+        finally{
+             loading.innerHTML=''
+        }
+
+        }
+
+button.addEventListener('click',fetchData)
+//fetchData();
